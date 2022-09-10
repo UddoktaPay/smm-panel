@@ -1,3 +1,20 @@
+if ($_GET && $_GET["success"]) :
+    $success = 1;
+    $successText = "Your payment paid successfully";
+endif;
+
+if ($_GET && $_GET["cancel"]) :
+    $error = 1;
+    $errorText = "Your payment cancelled successfully";
+endif;
+
+
+
+
+
+
+
+
 elseif ($method_id == 31) {
 $apiUrl = $extra['api_url'];
 $apiKey = $extra['api_key'];
