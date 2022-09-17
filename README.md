@@ -1,10 +1,11 @@
 # SMM Panel
 
-Admin Panel: ajax_data.php // search "perfectmoney"
+Admin Panel: ajax_data.php
 
-User Panel: addfunds.php // After Line no 60 First Part &  After Line no 234 Last Part of Code
+User Panel: addfunds.php
 
-User Panel: payment.php // After Line no 14 
-
+User Panel: payment.php
 
 Upload SQL On database
+
+Follow this video: https://www.youtube.com/watch?v=zFghuqqmygI
