@@ -1,0 +1,2 @@
+INSERT INTO `payment_methods` (`id`, `method_name`, `method_get`, `method_min`, `method_max`, `method_type`, `method_extras`, `method_line`) VALUES
+(72, 'UddoktaPay', 'uddoktapay', 1, 10000, '2', '{\"method_type\":\"1\",\"name\":\"UddoktaPay\",\"min\":\"1\",\"max\":\"10000\",\"api_key\":\"982d381360a69d419689740d9f2e26ce36fb7a50\",\"api_url\":\"https:\\/\\/sandbox.uddoktapay.com\\/api\\/checkout\",\"exchange_rate\":\"100\",\"fee\":\"0\"}', 1);

@@ -20,7 +20,7 @@ if ($method_name == 'uddoktapay') {
         }
     
         if (isset($data['status']) && $data['status'] == 'COMPLETED') {
-            if (countRow(['table' => 'payments', 'where' => ['client_id' => $data['metadata']['user_id'], 'payment_method' => 31, 'payment_status' => 1, 'payment_delivery' => 1, 'payment_extra' => $data['metadata']['txnid']]])) {
+            if (countRow(['table' => 'payments', 'where' => ['client_id' => $data['metadata']['user_id'], 'payment_method' => 72, 'payment_status' => 1, 'payment_delivery' => 1, 'payment_extra' => $data['metadata']['txnid']]])) {
                 if ($data['status'] == 'COMPLETED') {
                     $payment = $conn->prepare('SELECT * FROM payments INNER JOIN clients ON clients.client_id=payments.client_id WHERE payments.payment_extra=:extra ');
                     $payment->execute(['extra' => $data['metadata']['txnid']]);
@@ -67,7 +67,7 @@ if ($method_name == 'uddoktapay') {
                     }
                 } else {
                     $update = $conn->prepare('UPDATE payments SET payment_status=:payment_status WHERE client_id=:client_id, payment_method=:payment_method, payment_delivery=:payment_delivery, payment_extra=:payment_extra');
-                    $update = $update->execute(['payment_status' => 2, 'client_id' => $data['metadata']['user_id'], 'payment_method' => 31, 'payment_delivery' => 1, 'payment_extra' => $data['metadata']['txnid']]);
+                    $update = $update->execute(['payment_status' => 2, 'client_id' => $data['metadata']['user_id'], 'payment_method' => 72, 'payment_delivery' => 1, 'payment_extra' => $data['metadata']['txnid']]);
                 }
             }
         }

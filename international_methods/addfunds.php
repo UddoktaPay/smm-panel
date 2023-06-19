@@ -15,21 +15,17 @@ endif;
 
 
 
-elseif ($method_id == 31) {
+elseif ($method_id == 73) :
 $apiUrl = $extra['api_url'];
 $apiKey = $extra['api_key'];
 
-$namount = $amount * $extra['exchange_rate'];
-$fee = $extra['fee'];
-$famount = $namount;
-
-$famount = number_format((float) $famount, 2, ".", "");
+$amount = number_format((float) $amount, 2, ".", "");
 $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 
 $posted = [
-'full_name' => isset($user['first_name']) ? $user['first_name'] : 'John Doe',
+'full_name' => isset($user['username']) ? $user['username'] : 'John Doe',
 'email' => $user['email'],
-'amount' => $famount,
+'amount' => $amount,
 'metadata' => [
 'user_id' => $user['client_id'],
 'txnid' => $txnid
@@ -90,4 +86,3 @@ echo '<div class="dimmer active" style="min-height: 400px;">
 		</form>
 	</div>
 </div>';
-}
