@@ -1,4 +1,4 @@
-if ($method_name == 'uddoktapay') {
+if ($method_name == 'uddoktapay-international') {
 
     $response = file_get_contents('php://input');
     
