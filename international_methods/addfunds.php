@@ -33,7 +33,7 @@ $posted = [
 ],
 'redirect_url' => site_url('addfunds?success=true'),
 'cancel_url' => site_url('addfunds?cancel=true'),
-'webhook_url' => site_url('payment/uddoktapay'),
+'webhook_url' => site_url('payment/uddoktapay-international'),
 ];
 
 // Setup request to send json via POST.
