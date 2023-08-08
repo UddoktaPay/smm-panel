@@ -1,5 +1,3 @@
-<?php
-
 if ($method_name == 'uddoktapay-international') {
 	$invoice_id = $_GET['invoice_id'];
 	if (empty($invoice_id)) {
