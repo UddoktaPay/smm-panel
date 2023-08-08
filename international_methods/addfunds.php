@@ -16,52 +16,65 @@ endif;
 
 
 elseif ($method_id == 73) :
-$apiUrl = $extra['api_url'];
 $apiKey = $extra['api_key'];
+$host = parse_url(trim($extra['api_url']),  PHP_URL_HOST);
+$apiUrl = "https://{$host}/api/checkout-v2";
 
-$amount = number_format((float) $amount, 2, ".", "");
+$final_amount = $amount;
 $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 
 $posted = [
-'full_name' => isset($user['username']) ? $user['username'] : 'John Doe',
-'email' => $user['email'],
-'amount' => $amount,
-'metadata' => [
-'user_id' => $user['client_id'],
-'txnid' => $txnid
-
-],
-'redirect_url' => site_url('addfunds?success=true'),
-'cancel_url' => site_url('addfunds?cancel=true'),
-'webhook_url' => site_url('payment/uddoktapay-international'),
+	'full_name' => isset($user['first_name']) ? $user['first_name'] : 'John Doe',
+	'email' => $user['email'],
+	'amount' => $final_amount,
+	'metadata' => [
+		'user_id' => $user['client_id'],
+		'txnid' => $txnid
+	],
+	'redirect_url' => site_url('payment/uddoktapay-international'),
+	'return_type' => 'GET',
+	'cancel_url' => site_url('addfunds?cancel=true'),
+	'webhook_url' => site_url('payment/uddoktapay-international')
 ];
 
-// Setup request to send json via POST.
-$headers = [];
-$headers[] = "Content-Type: application/json";
-$headers[] = "RT-UDDOKTAPAY-API-KEY: {$apiKey}";
+$curl = curl_init();
+curl_setopt_array($curl, [
+	CURLOPT_URL => $apiUrl,
+	CURLOPT_RETURNTRANSFER => true,
+	CURLOPT_ENCODING => "",
+	CURLOPT_MAXREDIRS => 10,
+	CURLOPT_TIMEOUT => 30,
+	CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+	CURLOPT_CUSTOMREQUEST => "POST",
+	CURLOPT_POSTFIELDS => json_encode($posted),
+	CURLOPT_HTTPHEADER => [
+		"RT-UDDOKTAPAY-API-KEY: " . $apiKey,
+		"accept: application/json",
+		"content-type: application/json"
+	],
+]);
 
-// Contact UuddoktaPay Gateway and get URL data
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL, $apiUrl);
-curl_setopt($ch, CURLOPT_POST, 1);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($posted));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-$response = curl_exec($ch);
-curl_close($ch);
+$response = curl_exec($curl);
+$err = curl_error($curl);
+
+curl_close($curl);
+
+if ($err) {
+	echo "cURL Error #:" . $err;
+	exit();
+}
+
 $result = json_decode($response, true);
 if ($result['status']) {
 	$order_id = $txnid;
 	$insert = $conn->prepare("INSERT INTO payments SET client_id=:c_id, payment_amount=:amount, payment_privatecode=:code, payment_method=:method, payment_create_date=:date, payment_ip=:ip, payment_extra=:extra");
 	$insert->execute(array("c_id" => $user['client_id'], "amount" => $amount, "code" => $paymentCode, "method" => $method_id, "date" => date("Y.m.d H:i:s"), "ip" => GetIP(), "extra" => $order_id));
-
 	if ($insert) {
-	$payment_url = $result['payment_url'];
+		$payment_url = $result['payment_url'];
 	}
 } else {
-echo $result['message'];
-exit();
+	echo $result['message'];
+	exit();
 }
 
 // Redirects to Uddoktapay
