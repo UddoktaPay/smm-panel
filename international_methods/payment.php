@@ -1,5 +1,5 @@
 if ($method_name == 'uddoktapay-international') {
-	$invoice_id = $_GET['invoice_id'];
+	$invoice_id = $_REQUEST['invoice_id'];
 	if (empty($invoice_id)) {
 		$up_response = file_get_contents('php://input');
 		$up_response_decode = json_decode($response, true);
