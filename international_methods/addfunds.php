@@ -18,7 +18,7 @@ endif;
 elseif ($method_id == 73) :
 $apiKey = $extra['api_key'];
 $host = parse_url(trim($extra['api_url']),  PHP_URL_HOST);
-$apiUrl = "https://{$host}/api/checkout-v2";
+$apiUrl = "https://{$host}/api/checkout-v2/global";
 
 $final_amount = $amount;
 $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
