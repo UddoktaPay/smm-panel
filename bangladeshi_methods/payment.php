@@ -6,6 +6,10 @@ if ($method_name == 'uddoktapay') {
 		$invoice_id = $up_response_decode['invoice_id'];
 	}
 
+	if(empty($invoice_id)){
+	    die('Direct access is not allowed.');
+	}
+
 	$apiKey =  trim($extras['api_key']);
 	$host = parse_url(trim($extras['api_url']),  PHP_URL_HOST);
 	$apiUrl = "https://{$host}/api/verify-payment";
