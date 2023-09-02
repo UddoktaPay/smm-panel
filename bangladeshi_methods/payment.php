@@ -2,7 +2,7 @@ if ($method_name == 'uddoktapay') {
 	$invoice_id = $_REQUEST['invoice_id'];
 	if (empty($invoice_id)) {
 		$up_response = file_get_contents('php://input');
-		$up_response_decode = json_decode($response, true);
+		$up_response_decode = json_decode($up_response, true);
 		$invoice_id = $up_response_decode['invoice_id'];
 	}
 
