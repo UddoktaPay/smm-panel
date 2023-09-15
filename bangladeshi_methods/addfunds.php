@@ -24,7 +24,7 @@ $final_amount = $amount * $extra['exchange_rate'];
 $txnid = substr(hash('sha256', mt_rand() . microtime()), 0, 20);
 
 $posted = [
-	'full_name' => isset($user['first_name']) ? $user['first_name'] : 'John Doe',
+	'full_name' => isset($user['username']) ? $user['username'] : 'John Doe',
 	'email' => $user['email'],
 	'amount' => $final_amount,
 	'metadata' => [
